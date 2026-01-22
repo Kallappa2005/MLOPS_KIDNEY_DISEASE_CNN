@@ -94,7 +94,7 @@ def save_bin(data: Any, path: Path):
         path (Path): path to binary file
     """
     joblib.dump(value=data, filename=path)
-    logger.info(f"binary file saved at: {path}")
+    logger.info(f"binary file saved at: {path}") # joblib faster than the pickle in laoding numpy arrays
 
 
 @ensure_annotations
@@ -135,3 +135,9 @@ def decodeImage(imgstring, fileName):
 def encodeImageIntoBase64(croppedImagePath):
     with open(croppedImagePath, "rb") as f:
         return base64.b64encode(f.read())
+    
+# This is required because:
+# Images are binary data
+# APIs (JSON / HTTP) mainly work with text
+# So we encode image → text to send it
+# And decode text → image to use it again
