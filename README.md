@@ -53,12 +53,17 @@ Now, open up your local host and port to access the application.
 mlflow ui
 ```
 
-## DagShub Configuration
- ### import dagshub
+```python
+import dagshub
 
- ### dagshub.init(
-  ###   repo_owner="kallappakabbur874",
-   ###  repo_name="MLOPS_KIDNEY_DISEASE_CNN",
-   ###  mlflow=True
- ### )
+dagshub.init(
+    repo_owner="kallappakabbur874",
+    repo_name="MLOPS_KIDNEY_DISEASE_CNN",
+    mlflow=True
+)
+```
 
+### Dvc Commands 
+1. dvc init
+2. dvc repro
+3. dvc dag
