@@ -63,7 +63,16 @@ dagshub.init(
 )
 ```
 
-### Dvc Commands 
-1. dvc init
-2. dvc repro
-3. dvc dag
+
+### DVC Commands 
+1. `dvc init` - Initialize DVC in your project.
+2. `dvc repro` - Reproduce the entire pipeline or specific stages.
+3. `dvc dag` - Visualize the pipeline as a directed acyclic graph.
+4. `dvc status` - Check if data or pipeline has changed.
+5. `dvc metrics show` - Display metrics from experiments and runs.
+6. `dvc add` - Tell DVC to track a dataset or model file.
+7. `dvc remote add` - Add a remote storage (cloud / DagsHub / local).
+8. `dvc remote list` - Show all configured DVC remotes.
+9. `dvc push` - Upload data/models to remote storage.
+10. `dvc pull` - Download data/models from remote storage.
+11. `dvc checkout` - Restore data to the version in .dvc files.
