@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kidney Disease Detection - AI-Powered Classification</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #667eea !important;
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            padding: 80px 20px;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+            margin-bottom: 60px;
+        }
+
+        .hero-section h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            animation: slideInDown 0.8s ease;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            animation: slideInUp 0.8s ease;
+        }
+
+        @keyframes slideInDown {
+            from { transform: translateY(-30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Info Cards */
+        .info-section {
+            padding: 60px 20px;
+            background: white;
+            margin: 40px 0;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 50px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.2);
+        }
+
+        .info-card h3 {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .info-card p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        /* Metrics Section */
+        .metrics-section {
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+            text-align: center;
+            margin: 40px 0;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .metric {
+            margin: 20px 0;
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .metric-label {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* Pipeline Section */
+        .pipeline-section {
+            padding: 60px 20px;
+        }
+
+        .pipeline-item {
+            display: flex;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .pipeline-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-right: 30px;
+            flex-shrink: 0;
+        }
+
+        .pipeline-content h4 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+
+        .pipeline-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .demo-container {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(102, 126, 234, 0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .upload-area.dragover {
+            border-color: #764ba2;
+            background: rgba(102, 126, 234, 0.15);
+            transform: scale(1.02);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .upload-text h3 {
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .upload-text p {
+            color: #999;
+            margin-bottom: 0;
+        }
+
+        #fileinput {
+            display: none;
+        }
+
+        .preview-container {
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .preview-img {
+            max-width: 100%;
+            height: 300px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-predict, .btn-upload, .btn-clear {
+            padding: 12px 35px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-predict {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-predict:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-upload {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-upload:hover {
+            background: #764ba2;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-clear {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-clear:hover {
+            background: #d0d0d0;
+        }
+
+        /* Results Section */
+        .results-container {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 30px;
+            display: none;
+        }
+
+        .results-container.show {
+            display: block;
+            animation: slideInUp 0.5s ease;
+        }
+
+        .prediction-result {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .result-label {
+            color: #999;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .result-tumor {
+            color: #e74c3c;
+        }
+
+        .result-normal {
+            color: #27ae60;
+        }
+
+        .result-confidence {
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        /* Loading */
+        #loading {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #loading.show {
+            display: flex;
+        }
+
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            background: #2d3436;
+            color: #dfe6e9;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .footer h5 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .footer p {
+            margin-bottom: 5px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .demo-container {
+                padding: 25px;
+            }
+
+            .pipeline-item {
+                margin-bottom: 20px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn-predict, .btn-upload, .btn-clear {
+                width: 100%;
+            }
+        }
+
+        /* Utility */
+        .text-gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .feature-badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main container">
+		<section class="iupload">
+			<h3 class="text-center py-4">Object Classification</h3>
+			<div class="row">
+				<div class="img-part col-md-6">
+					<div class="image-part">
+						<video autoplay id="video" poster="https://img.freepik.com/free-vector/group-young-people-posing-photo_52683-18824.jpg?size=338&ext=jpg"></video>
+						<img src="" id="photo">
+						<canvas style="display:none;" id="canvas"></canvas>
+					</div>
+					<div class="btn-part">
+						<form id="upload-data pt-3" class="">
+							<div class="input-group mt-3 row">
+								<button type="button" class="btn btn-primary col-md-5 col-xs-5 ml-3 mr-4" id="uload">Upload</button>
+								<button id="send" type="button" class="btn btn-success col-md-5 col-xs-5">Predict</button>
+							</div>
+
+
+
+
+
+
+							<!-- change url value  -->
+
+
+
+
+							<input type="hidden" class="form-control mr-2" id="url" placeholder="Enter REST Api url..." value="../predict"/>
+							<input name="upload" type="file" id="fileinput" style="position:absolute;top:-500px;"/><br/>
+						</form>
+					</div>
+				</div>
+				<div class="col-md-6 col-xs-12 right-part">
+					<h5 class="mb-2"><center>Prediction Results</center></h5>
+					<div class="row">
+						<div class="res-part2 col-md-5 col-xs-12"></div>
+						<div class="res-part col-md-5 col-xs-12"><div class="jsonRes"></div></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<img class="logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIkAAAAlCAMAAABBJDpuAAAAVFBMVEX/fgD/iQA7NzIyMjMnNYInNYEnNYInNYEzMzInNYQnNYETJzsnNYIwN1wxMjNoTis4O1YrNm0xOF47PE9DP0dEQEVpTVkAJJ4nNYEOLJHJbiAzMzOmmmHRAAAAFnRSTlOh/vu+986oen9fP2UqEzQkFAIDAAEEILVBJQAAA3FJREFUWMPNmO2WoyAMQG0VBARtdVRs3/89NwkgaF1rd2aOm18tIrnkgwSz7n+R7LcV1ELkeS7E7VySRlyfQXJhTiO55c+liP4cEuH1X8E7gaV+S3Jv2zYZ/Vr+/Sdx2vP6doc/fSPcf/GOpLSFVXFUW8t+giRP47TOd60yk1hbxIhSP0ACKPWrvw7YBIT/lcQY84G3Wk17ugWQfg5UsQJpjflKSLQi7xTWyk0SXTJ4VnB5D1yccxmp4Z+mX5KGNS+SPXVNll0ulyxL0wYmloBB6zL/MpCoAgjAJiUM6w0SboMwPUdRogvNKcNM3smFdRvEcJJkKcflQa+X0pNIfBGW0zKqjyQtw4VLKQlI7ZLgdrRNSZDjMQx2GB4pCkxkCrfGWUTJ0Egan6muCHgJCUwtnCk0mrJ9Q8K5LUqtdSfynkAedhynaRqngVDaXLiJEAzkFkM71IuIlWRYtSQpbXSZDvQ7JPCei9brs+oaABkn74LRIkpFaVxGnzjvIxTYREOoEwn5r01JTDRTcO87Eu3zNUeTPKZpjrIRrNIDCjzALbPk7LJMIokOEQu2K7yKQAKvFDF9pVe0R+LGb7h1MMkw2ijjA/1zhSfSphvEAChXJEhAqwYStIJWXnTpvbdH4hTUwSQ2JRmQpILDLYbB7J41SYiLcNozu5Z3JMo7RxBJahI7WSRByCMkqJt9hySESbVJcvmARJGFExJmdBSl2oM2+T4JLWfgaGFptizlPUm1FydHSdyZ7UnS4ySph2kS0kJrkvr5NJg7dnrJnfxgxPozRPGtkyPNOxtaiDvbIAF9L+5B5zTI2BwlwXmM+U3zReav3o0F8oUEFFZ42McDZYomOUziFmezgWyo251Uc1nyKJol7URCEvIYUEbHYaEGQi9C9egwCdVfHwiaajfjKMUcHcRacCylhWJbJDfq47EEDhYqoIWjHnwDXZPpPiChPQelLU+Cbm4w50FmYgkvFwpiWwCC/Um/SLcNElOC9RVj6qWpCiEMvRUK4zLpdKmPw8rVldy/qxjn60wLrVLWJIPLiZJRr3fsvnOHPvare+lB93tb37T20D82jqOt+zNuXhuNvNhp7X+PpHb3rvV9R5xjE2SpyCN9ffQO+GtWIZr5Xnytz4gTMIRYfys47/uJEXny/aQ/95tSUwmU+uRvSp/IHzQqZYpYrQmxAAAAAElFTkSuQmCC" />
+
+
+<div id="loading"><div class="loader"></div></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script>
+var mybtn = document.getElementById('startbtn');
+var myvideo = document.getElementById('video');
+var mycanvas = document.getElementById('canvas');
+var myphoto = document.getElementById('photo');
+var base_data = "";
+
+function sendRequest(base64Data){
+	var type = "json";
+	if(base64Data != "" || base64Data != null){
+		if(type == "imgtobase"){
+			$(".res-part").html("");
+			$(".res-part").html(base64Data);
+		}
+		else if(type == "basetoimg"){
+			var imageData = $("#imgstring").val();
+			$(".res-part").html("");
+			$(".res-part").append("<img src='data:image/jpeg;base64," + imageData + "' alt='' />");
+		}
+		else{
+			var url = $("#url").val();
+			$("#loading").show();
+			$.ajax({
+				url : url,
+				type: "post",
+				cache: false,
+				async: true,
+				crossDomain: true,
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin':'*'
+				},
+				data:JSON.stringify({image:base64Data}),
+				success: function(res){
+					$(".res-part").html("");
+					$(".res-part2").html("");
+					try{
+						var imageData = res[1].image;
+						if(imageData.length > 100){
+							if(imageData.length > 10){$(".res-part2").append("<img class='resp-img' src='data:image/jpeg;base64," + imageData + "' alt='' />");}
+						}
+					}catch(e){}
+					$(".res-part").html("<pre>" + JSON.stringify(res[0], undefined, 2) + "</pre>");
+					$("#loading").hide();
+				}
+			});
+		}
+	}
+}
+
+$(document).ready(function(){
+	$("#loading").hide();
+
+	$('#send').click(function(evt){
+		sendRequest(base_data);
+    });
+
+    $('#uload').click(function(evt) {
+        $('#fileinput').focus().trigger('click');
+    });
+	$("#fileinput").change(function(){
+		if (this.files && this.files[0]){
+			var reader = new FileReader();
+			reader.onload = function (e){
+				var url = e.target.result;
+				var img = new Image();
+				img.crossOrigin = 'Anonymous';
+				img.onload = function(){
+					var canvas = document.createElement('CANVAS');
+					var ctx = canvas.getContext('2d');
+					canvas.height = this.height;
+					canvas.width = this.width;
+					ctx.drawImage(this, 0, 0);
+					base_data = canvas.toDataURL('image/jpeg', 1.0).replace(/^data:image.+;base64,/, '');
+					canvas = null;
+				};
+				img.src = url;
+				$('#photo').attr('src', url);
+				$('#photo').show();
+				$('#video').hide();
+			}
+			reader.readAsDataURL(this.files[0]);
+		}
+	});
+});
+
+</script>
+</body>
+</html>

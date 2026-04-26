@@ -1,4 +1,5 @@
 # Kidney Disease Classification - MLflow DVC
+run mlflow ui
 
 ## Project Overview
 This is a kidney disease classification project using deep learning with MLflow for experiment tracking and DVC for data version control.
