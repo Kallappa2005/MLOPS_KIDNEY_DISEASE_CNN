@@ -16,6 +16,5 @@ venv/
 .DS_Store
 .vscode
 *.log
-model/*
 notebooks/*
 .ipynb_checkpoints
