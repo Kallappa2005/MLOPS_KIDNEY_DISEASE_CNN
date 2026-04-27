@@ -77,3 +77,31 @@ dagshub.init(
 9. `dvc push` - Upload data/models to remote storage.
 10. `dvc pull` - Download data/models from remote storage.
 11. `dvc checkout` - Restore data to the version in .dvc files.
+
+## GitHub CI/CD (Test -> Deploy to Render)
+
+This project includes a GitHub Actions workflow at `.github/workflows/ci-cd.yml`.
+
+### Pipeline Flow
+1. Run smoke tests from `tests/test_ci_smoke.py`
+2. Trigger a Render deploy hook
+3. Render builds and deploys the latest `main` branch code
+
+### Required GitHub Repository Secrets
+
+Set these secrets in GitHub:
+
+- `RENDER_DEPLOY_HOOK`
+
+## Render Deployment
+
+1. In Render, create a new Web Service.
+2. Connect this GitHub repository.
+3. Set the branch to `main`.
+4. Use a Python source-based service, not a Docker image service.
+5. Set the start command to `python app.py` or `gunicorn app:app` if you later add gunicorn.
+6. Make sure the app binds to `0.0.0.0` and uses the `PORT` environment variable.
+7. Open the service settings and copy the Deploy Hook URL.
+8. Store that URL as the GitHub secret `RENDER_DEPLOY_HOOK`.
+
+When code is pushed to `main`, GitHub Actions runs tests first. If tests pass, the workflow calls Render's deploy hook and Render rebuilds and redeploys the app from source.

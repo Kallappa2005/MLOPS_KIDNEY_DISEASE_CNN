@@ -1,20 +1,30 @@
-research/*
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+
+.env
+.venv
+venv
+env
+
 .git
 .gitignore
-Dockerfile
-.dockerignore
-artifacts/*
-logs/*
-*.pyc
-__pycache__
-.pytest_cache
-.coverage
-.venv
-env/
-venv/
-*.egg-info
-.DS_Store
-.vscode
+
+node_modules
+
+# ML heavy folders (CRITICAL)
+artifacts/
+mlruns/
+logs/
+research/
+.dvc/
+
+# Large files
+*.pt
+*.pth
+*.ckpt
+*.pkl
+
+# Misc
 *.log
-notebooks/*
-.ipynb_checkpoints
