@@ -48,10 +48,13 @@ def predictRoute():
         return jsonify({"error": str(e)}), 500
 
 
+
+
 if __name__ == "__main__":
     clApp = ClientApp()
     app.run(
         host='0.0.0.0',
         port=int(os.getenv("PORT", 8080)),
         debug=os.getenv("FLASK_DEBUG", "0") == "1"
-    )
+    )  
+    # for AWS
