@@ -1,9 +1,5 @@
 # Kidney Disease Classification - End-to-End MLOps Project
 
-## Live Demo
-
-https://mlops-kidney-disease-cnn.onrender.com
-
 This application predicts whether an uploaded kidney CT scan image is Normal or Tumor.
 
 ## What We Built
